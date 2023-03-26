@@ -5,7 +5,7 @@ db = Database(database="mercado", collection="compras")
 # db.resetDatabase()
 
 # 1.Média de gasto total:
-# result = db.collection.aggregate([
+# result = db.collection.aggregate ([
 #     {"$unwind": "$produtos"},
 #     {"$group": {"_id": "$cliente_id", "total": {"$sum": {"$multiply": ["$produtos.quantidade", "$produtos.preco"]}}}},
 #     {"$group": {"_id": None, "media": {"$avg": "$total"}}}
@@ -24,12 +24,52 @@ db = Database(database="mercado", collection="compras")
 # writeAJson(result, "Cliente que mais comprou em cada dia")
 
 # # Produto mais vendido:
-result = db.collection.aggregate([
-    {"$unwind": "$produtos"},
-    {"$group": {"_id": "$produtos.descricao", "total": {"$sum": "$produtos.quantidade"}}},
-    {"$sort": {"total": -1}},
-    {"$limit": 1}
-])
+# result = db.collection.aggregate([
+#    {"$unwind": "$produtos"},
+#    {"$group": {"_id": "$produtos.descricao", "total": {"$sum": "$produtos.quantidade"}}},
+#    {"$sort": {"total": -1}},
+#    {"$limit": 1}
+# ])
+# writeAJson(result, "Produto mais vendido")
 
-writeAJson(result, "Produto mais vendido")
 
+############################################################################################################
+############################################################################################################
+
+
+ # Total de vendas por dia:
+#result = db.collection.aggregate([
+#{"$unwind": "$produtos"},
+#{"$group": {"_id": { "data": "$data_compra"}, "total": {"$sum": {1}}}},
+#{"$sort": {"_id.data": 1, "total": -1}},
+# ])
+# writeAJson(result, "Total de vendas por dia") 
+
+
+# # Produto mais vendido em todas as compras:
+# result = db.collection.aggregate([
+# {"$unwind": "$produtos"},
+#    {"$group": {"_id": "cliente_id", "$produtos.descricao", "total": {"$sum": "$produtos.quantidade"}}},
+#    {"$sort": {"total": -1}},
+#    {"$limit": 1}
+# ])
+# writeAJson(result, "Produto mais vendido em todas aas compras")
+
+
+# # Cliente que gastou mais em uma unica compra:
+# result = db.collection.aggregate([
+# {"$unwind": "$produtos"},
+#     {"$group": {"_id": {"cliente": "$cliente_id"}, "total": {"$sum": {"$multiply": ["$produtos.quantidade", "$produtos.preco"]}}}},
+#     {"$sort": {"_id.data": 1, "total": -1}},
+#     {"$group": {"_id": "cliente": {"$first": "$_id.cliente"}, "total": {"$first": "$total"}}}
+# ])
+# writeAJson(result, "Cliente que gastou mais em uma compra")
+
+
+
+# # Listar todos os produtos que tiveram uma quantidade vendida acima de 1 unidades:
+#result = db.collection.aggregate([
+# {"$unwind": "$produtos"},
+# {"$group": {"_id": {"$quantidade">1}}}
+# ])
+# writeAJson(result, "Produtos que tiveram venda acima de 1 unidade")
